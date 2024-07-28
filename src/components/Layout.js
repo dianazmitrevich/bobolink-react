@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import CustomerList from "./CustomerList";
 import Scanner from "./Scanner";
 import Basket from "./Basket";
-import { generateCustomers } from "../utils/products";
+import { generateCustomers, productList } from "../utils/products";
+import ProductPriceModal from "./ProductPriceModal";
 
 const Layout = () => {
     const [customers, setCustomers] = useState(generateCustomers());
@@ -12,6 +13,8 @@ const Layout = () => {
     const [scannerReady, setScannerReady] = useState(false);
     const [currentProduct, setCurrentProduct] = useState(null);
     const [scannedProduct, setScannedProduct] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [products, setProducts] = useState(productList);
 
     const currentCustomer = customers[currentCustomerIndex];
 
@@ -56,6 +59,21 @@ const Layout = () => {
         setReceipts((prevReceipts) => [...prevReceipts, receipt]);
     };
 
+    const handleSavePrices = (updatedProducts) => {
+        setProducts(updatedProducts);
+
+        // Update the prices in the customers' product lists
+        const updatedCustomers = customers.map((customer) => ({
+            ...customer,
+            products: customer.products.map((product) => {
+                const updatedProduct = updatedProducts.find((p) => p.emoji === product.emoji);
+                return updatedProduct ? { ...product, price: updatedProduct.price } : product;
+            }),
+        }));
+
+        setCustomers(updatedCustomers);
+    };
+
     return (
         <div className="layout">
             <CustomerList customers={customers} currentCustomerIndex={currentCustomerIndex} />
@@ -70,6 +88,13 @@ const Layout = () => {
                 onProductDropped={handleProductDropped}
                 scannerReady={scannerReady}
                 currentProduct={currentProduct}
+            />
+            <button onClick={() => setIsModalOpen(true)}>Adjust Prices</button>
+            <ProductPriceModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                productList={products}
+                onSave={handleSavePrices}
             />
             <div className="receipts">
                 <h3>Receipts</h3>
