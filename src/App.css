@@ -16,6 +16,11 @@
     margin-bottom: 20px;
 }
 
+.customer.active {
+    border: 2px solid #007bff;
+    padding: 8px;
+}
+
 .products {
     display: flex;
     flex-wrap: wrap;
@@ -50,5 +55,35 @@
 }
 
 .basket .total {
+    margin-top: 10px;
+}
+
+.receipts {
+    margin-top: 20px;
+}
+
+.receipt {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.receipt h4 {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.receipt ul {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.receipt ul li {
+    margin-bottom: 5px;
+}
+
+.receipt strong {
+    display: block;
     margin-top: 10px;
 }

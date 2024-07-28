@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
-import { useDrop } from "react-dnd";
-import Product from "./Product";
+import React, { useEffect, useState } from "react";
+import { useDrop, useDrag } from "react-dnd";
 
-const Scanner = ({ onScan, isReady, currentProduct }) => {
+const Scanner = ({ onScanComplete, scannedProduct, setScannedProduct }) => {
+    const [isReady, setIsReady] = useState(false);
+
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: "PRODUCT",
         drop: (item) => {
-            onScan(item);
+            if (canDrop && !isReady) {
+                setScannedProduct(item);
+                onScanComplete(item);
+            }
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -14,12 +18,35 @@ const Scanner = ({ onScan, isReady, currentProduct }) => {
         }),
     });
 
-    const isActive = isOver && canDrop;
+    useEffect(() => {
+        if (scannedProduct) {
+            const timer = setTimeout(() => {
+                setIsReady(true);
+            }, 1000); // Simulate scanning time
+            return () => clearTimeout(timer);
+        }
+    }, [scannedProduct]);
+
+    const [{ isDragging }, drag] = useDrag({
+        type: "PRODUCT",
+        item: { ...scannedProduct },
+        canDrag: isReady,
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+        end: () => {
+            if (isReady) {
+                setScannedProduct(null);
+                setIsReady(false);
+            }
+        },
+    });
+
     let backgroundColor = "#f7f7f7";
-    if (isActive) {
-        backgroundColor = "#d0f0c0"; // Indicate that the product can be scanned
+    if (isOver && canDrop) {
+        backgroundColor = "#d0f0c0";
     } else if (isReady) {
-        backgroundColor = "#90ee90"; // Scanner is ready, turn green
+        backgroundColor = "#90ee90";
     }
 
     return (
@@ -33,11 +60,16 @@ const Scanner = ({ onScan, isReady, currentProduct }) => {
                 height: "150px",
                 backgroundColor,
                 transition: "background-color 0.3s",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
             }}>
-            {currentProduct && isReady ? (
-                <Product product={currentProduct} isScanned={isReady} />
+            {scannedProduct && isReady ? (
+                <div ref={drag} style={{ cursor: "move" }}>
+                    {scannedProduct.emoji}
+                </div>
             ) : (
-                <p>Drop here to scan</p>
+                <p>Drop product here to scan</p>
             )}
         </div>
     );
