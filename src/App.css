@@ -1,38 +1,54 @@
-.App {
-  text-align: center;
+.layout {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.customer-list,
+.scanner,
+.basket {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 30%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.customer {
+    margin-bottom: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.products {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.App-link {
-  color: #61dafb;
+.product {
+    cursor: move;
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.product:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.scanner {
+    background-color: #f7f7f7;
+    transition: background-color 0.3s;
+}
+
+.scanner p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.basket .product {
+    background-color: #e0ffe0;
+}
+
+.basket .total {
+    margin-top: 10px;
 }
