@@ -11,7 +11,7 @@ const Layout = () => {
     const [receipts, setReceipts] = useState([]);
     const [scannerReady, setScannerReady] = useState(false);
     const [currentProduct, setCurrentProduct] = useState(null);
-    const [scannedProduct, setScannedProduct] = useState(null); // New state for the scanned product
+    const [scannedProduct, setScannedProduct] = useState(null);
 
     const currentCustomer = customers[currentCustomerIndex];
 
@@ -38,7 +38,7 @@ const Layout = () => {
 
         setScannerReady(false);
         setCurrentProduct(null);
-        setScannedProduct(null); // Clear the scanned product
+        setScannedProduct(null);
     };
 
     const handleProductScanned = (product) => {
