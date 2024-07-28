@@ -18,11 +18,8 @@ const Product = ({ product, isDraggable }) => {
             style={{
                 opacity: isDragging ? 0.5 : 1,
                 cursor: isDraggable ? "move" : "not-allowed",
-                backgroundColor: isDragging ? "#e0e0e0" : "#fff",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                padding: "5px",
-                margin: "5px",
+                // backgroundColor: isDragging ? "#e0e0e0" : "#fff",
+                fontSize: "40px",
                 display: "inline-block",
             }}>
             {product.emoji}
