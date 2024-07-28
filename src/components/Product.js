@@ -1,10 +1,11 @@
 import React from "react";
 import { useDrag } from "react-dnd";
 
-const Product = ({ product }) => {
+const Product = ({ product, isScanned }) => {
     const [{ isDragging }, drag] = useDrag({
         type: "PRODUCT",
         item: product,
+        canDrag: isScanned, // Only allow dragging if the product is scanned
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -16,7 +17,7 @@ const Product = ({ product }) => {
             className="product"
             style={{
                 opacity: isDragging ? 0.5 : 1,
-                cursor: "move",
+                cursor: isScanned ? "move" : "not-allowed",
                 backgroundColor: isDragging ? "#e0e0e0" : "#fff",
                 border: "1px solid #ccc",
                 borderRadius: "4px",

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDrop } from "react-dnd";
+import Product from "./Product";
 
-const Scanner = ({ onScan, isReady, currentProduct, onMoveToBasket }) => {
+const Scanner = ({ onScan, isReady, currentProduct }) => {
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: "PRODUCT",
         drop: (item) => {
@@ -12,14 +13,6 @@ const Scanner = ({ onScan, isReady, currentProduct, onMoveToBasket }) => {
             canDrop: monitor.canDrop(),
         }),
     });
-
-    useEffect(() => {
-        if (isReady && currentProduct) {
-            // Move product to basket after a certain time or user action
-            const timer = setTimeout(onMoveToBasket, 1000);
-            return () => clearTimeout(timer);
-        }
-    }, [isReady, currentProduct, onMoveToBasket]);
 
     const isActive = isOver && canDrop;
     let backgroundColor = "#f7f7f7";
@@ -41,7 +34,11 @@ const Scanner = ({ onScan, isReady, currentProduct, onMoveToBasket }) => {
                 backgroundColor,
                 transition: "background-color 0.3s",
             }}>
-            <p>{isReady ? "Product Scanned! Move to Basket" : "Drop here to scan"}</p>
+            {currentProduct && isReady ? (
+                <Product product={currentProduct} isScanned={isReady} />
+            ) : (
+                <p>Drop here to scan</p>
+            )}
         </div>
     );
 };
