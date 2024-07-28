@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 
-const Scanner = ({ setScannerReady, setCurrentProduct }) => {
-    const [scannedProduct, setScannedProduct] = useState(null);
-
+const Scanner = ({ setScannerReady, setCurrentProduct, scannedProduct, onProductScanned }) => {
     const [{ isOver }, drop] = useDrop({
         accept: "PRODUCT",
         hover: (item) => {
-            setScannedProduct(item);
-            setScannerReady(true);
             setCurrentProduct(item);
+            onProductScanned(item); // Call the function to notify the product is scanned
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -27,7 +24,16 @@ const Scanner = ({ setScannerReady, setCurrentProduct }) => {
                 backgroundColor: isOver ? "#90ee90" : "#f7f7f7",
                 transition: "background-color 0.3s",
             }}>
-            <p>{scannedProduct ? "Product scanned! Move to basket." : "Drop product here to scan"}</p>
+            {scannedProduct ? (
+                <div>
+                    <p>Product scanned!</p>
+                    <p>
+                        {scannedProduct.emoji} - ${scannedProduct.price}
+                    </p>
+                </div>
+            ) : (
+                <p>Drop product here to scan</p>
+            )}
         </div>
     );
 };

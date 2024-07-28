@@ -11,6 +11,7 @@ const Layout = () => {
     const [receipts, setReceipts] = useState([]);
     const [scannerReady, setScannerReady] = useState(false);
     const [currentProduct, setCurrentProduct] = useState(null);
+    const [scannedProduct, setScannedProduct] = useState(null); // New state for the scanned product
 
     const currentCustomer = customers[currentCustomerIndex];
 
@@ -37,6 +38,12 @@ const Layout = () => {
 
         setScannerReady(false);
         setCurrentProduct(null);
+        setScannedProduct(null); // Clear the scanned product
+    };
+
+    const handleProductScanned = (product) => {
+        setScannedProduct(product);
+        setScannerReady(true);
     };
 
     const generateReceipt = (products) => {
@@ -52,7 +59,12 @@ const Layout = () => {
     return (
         <div className="layout">
             <CustomerList customers={customers} currentCustomerIndex={currentCustomerIndex} />
-            <Scanner setScannerReady={setScannerReady} setCurrentProduct={setCurrentProduct} />
+            <Scanner
+                setScannerReady={setScannerReady}
+                setCurrentProduct={setCurrentProduct}
+                scannedProduct={scannedProduct}
+                onProductScanned={handleProductScanned}
+            />
             <Basket
                 scannedProducts={scannedProducts}
                 onProductDropped={handleProductDropped}
